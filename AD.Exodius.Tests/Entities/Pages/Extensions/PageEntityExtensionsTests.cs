@@ -2,7 +2,7 @@
 using NSubstitute;
 using AD.Exodius.Entities.Pages;
 using AD.Exodius.Entities.Pages.Extensions;
-using AD.Exodius.Tests.Stubs.Entities.PageObjects;
+using AD.Exodius.Tests.Stubs.Entities.Pages;
 using AD.Exodius.Events;
 
 namespace AD.Exodius.Tests.Entities.Pages.Extensions;
@@ -93,7 +93,7 @@ public class PageEntityExtensionsTests
     }
 
     [Fact]
-    public void GetPageObjectMeta_ShouldReturnValidMeta_WhenMetaIsFound()
+    public void GetPageEntityMeta_ShouldReturnValidMeta_WhenMetaIsFound()
     {
         var meta = _metaPageEntity.GetPageEntityMeta();
 
@@ -101,10 +101,11 @@ public class PageEntityExtensionsTests
         Assert.Equal("/home", meta.Route);
         Assert.Equal("Example", meta.Name);
         Assert.Equal("test", meta.DomId);
+        Assert.Equal("?param1=value1&param2=value2", meta.QueryString);
     }
 
     [Fact]
-    public void TryGetPageObjectMeta_ShouldReturnTrueAndValidMeta_WhenMetaIsFound()
+    public void TryGetPageEntityMeta_ShouldReturnTrueAndValidMeta_WhenMetaIsFound()
     {
         var isMetaPresent = _metaPageEntity.TryGetPageEntityMeta(out var meta);
 
@@ -113,6 +114,7 @@ public class PageEntityExtensionsTests
         Assert.Equal("/home", meta.Route);
         Assert.Equal("Example", meta.Name);
         Assert.Equal("test", meta.DomId);
+        Assert.Equal("?param1=value1&param2=value2", meta.QueryString);
     }
 
     [Fact]
