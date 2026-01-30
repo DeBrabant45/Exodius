@@ -1,5 +1,5 @@
-﻿using AD.Exodius.Navigators.Strategies;
-using AD.Exodius.Utility.Tasks;
+﻿using AD.Exodius.Helpers;
+using AD.Exodius.Navigators.Strategies;
 using Mock.SwagLabs.Pages;
 using Mock.SwagLabs.Pages.Models;
 using Mock.SwagLabs.Tests.Fixtures;
@@ -9,7 +9,7 @@ namespace Mock.SwagLabs.Tests.Logins;
 
 [TestFixture]
 [Parallelizable(ParallelScope.Self)]
-public class LoginTests : BaseTestStartup
+public class LoginTests : BaseDashboardTestStartup
 {
     [TestCase("standard_user", "secret_sauce")]
     [TestCase("performance_glitch_user", "secret_sauce")]
@@ -19,7 +19,7 @@ public class LoginTests : BaseTestStartup
         var login = new Login { Username = username, Password = password };
 
         var isLoginPageErrorMessagePresent = await Navigator
-            .GoTo<LoginPage, ByRoute>()
+            .GoToAsync<LoginPage, ByRoute>()
             .Then(page => page.Login(login))
             .Then(page => page.IsErrorMessagePresent());
 
@@ -35,7 +35,7 @@ public class LoginTests : BaseTestStartup
         var login = new Login { Username = username, Password = password };
 
         var loginPageErrorMessage = await Navigator
-            .GoTo<LoginPage, ByRoute>()
+            .GoToAsync<LoginPage, ByRoute>()
             .Then(page => page.Login(login))
             .Then(page => page.GetErrorMessageText());
 
@@ -48,7 +48,7 @@ public class LoginTests : BaseTestStartup
         var login = new Login { Username = username, Password = password };
 
         var loginPageErrorMessage = await Navigator
-            .GoTo<LoginPage, ByRoute>()
+            .GoToAsync<LoginPage, ByRoute>()
             .Then(page => page.Login(login))
             .Then(page => page.GetErrorMessageText());
 

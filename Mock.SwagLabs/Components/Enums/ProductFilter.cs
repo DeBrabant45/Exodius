@@ -1,4 +1,4 @@
-﻿using AD.Exodius.Utility.Attributes;
+﻿using Mock.SwagLabs.Utilities;
 
 namespace Mock.SwagLabs.Components.Enums;
 

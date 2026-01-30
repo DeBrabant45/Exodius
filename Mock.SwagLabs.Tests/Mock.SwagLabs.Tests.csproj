@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AD.Exodius.StartupServices\AD.Exodius.StartupServices.csproj" />
     <ProjectReference Include="..\AD.Exodius\AD.Exodius.csproj" />
     <ProjectReference Include="..\Mock.SwagLabs\Mock.SwagLabs.csproj" />
   </ItemGroup>
@@ -33,5 +32,8 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
   </ItemGroup>
+
+  <!--Uncomment For setup on build/rebuild -->
+  <!--<Import Project="..\.build\setup.targets" />-->
 
 </Project>

@@ -12,7 +12,7 @@ public class SelectElement : BaseElement
     ///  <para>Performs a standard select of the element if the parameter is not null, empty or None.</para>
     ///  <para>Action will throw an error if element is not present.</para>
     /// </summary>
-    public async Task SelectValue(string value)
+    public async Task SelectValueAsync(string value)
     {
         if (string.IsNullOrEmpty(value) || value == "None")
             return;
@@ -26,17 +26,17 @@ public class SelectElement : BaseElement
     /// </summary>
     public async Task VisibilitySelectValue(string value)
     {
-        if (!await IsVisible())
+        if (!await IsVisibleAsync())
             return;
 
-        await SelectValue(value);
+        await SelectValueAsync(value);
     }
 
     /// <summary>
     ///  <para>Performs a standard select of the element if the parameter is not null, empty or None.</para>
     ///  <para>Action will throw an error if element is not present.</para>
     /// </summary>
-    public async Task SelectText(string text)
+    public async Task SelectTextAsync(string text)
     {
         if (string.IsNullOrEmpty(text) || text == "None")
             return;
@@ -48,11 +48,11 @@ public class SelectElement : BaseElement
     /// <para>Performs a standard select of the element if the parameter is not null, empty, None and is visible on the page.</para>
     /// <para>Action will be returned and no error will be thrown if element is not present.</para>
     /// </summary>
-    public async Task VisibilitySelectText(string text)
+    public async Task VisibilitySelectTextAsync(string text)
     {
-        if (!await IsVisible())
+        if (!await IsVisibleAsync())
             return;
 
-        await SelectText(text);
+        await SelectTextAsync(text);
     }
 }

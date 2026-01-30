@@ -1,46 +1,52 @@
 ﻿using AD.Exodius.Drivers;
+using AD.Exodius.Entities.Pages;
+using AD.Exodius.Entities.Pages.Factories;
+using AD.Exodius.Events.Factories;
 using AD.Exodius.Navigators.Strategies;
 using AD.Exodius.Navigators.Strategies.Factories;
-using AD.Exodius.Pages;
-using AD.Exodius.Pages.Factories;
 
 namespace AD.Exodius.Navigators;
 
 public class Navigator : INavigator
 {
-    private readonly IDriver _driver;
-    private readonly IPageObjectFactory _pageObjectFactory;
-    private readonly IPageObjectRegistryFactory _pageObjectRegistryFactory;
-    private readonly INavigationStrategyFactory _navigationStrategyFactory;
+    protected readonly IDriver Driver;
+    protected readonly IEventBusFactory EventBusFactory;
+    protected readonly IPageEntityFactory PageEntityFactory;
+    protected readonly IPageEntityRegistryFactory PageEntityRegistryFactory;
+    protected readonly INavigationStrategyFactory NavigationStrategyFactory;
 
     public Navigator(
         IDriver driver,
-        IPageObjectFactory pageObjectFactory,
-        IPageObjectRegistryFactory pageObjectRegistryFactory,
+        IEventBusFactory eventBusFactory,
+        IPageEntityFactory pageEntityFactory,
+        IPageEntityRegistryFactory pageEntityRegistryFactory,
         INavigationStrategyFactory navigationStrategyFactory)
     {
-        _driver = driver;
-        _pageObjectFactory = pageObjectFactory;
-        _pageObjectRegistryFactory = pageObjectRegistryFactory;
-        _navigationStrategyFactory = navigationStrategyFactory;
+        Driver = driver;
+        EventBusFactory = eventBusFactory;
+        PageEntityFactory = pageEntityFactory;
+        PageEntityRegistryFactory = pageEntityRegistryFactory;
+        NavigationStrategyFactory = navigationStrategyFactory;
     }
 
-    public virtual async Task<TPage> GoTo<TPage, TNavigation>()
-        where TPage : IPageObject
+    public virtual async Task<TPage> GoToAsync<TPage, TNavigation>()
+        where TPage : IPageEntity
         where TNavigation : INavigationStrategy
     {
-        var pageObject = _pageObjectFactory.Create<TPage>(_driver);
+        var eventBus = EventBusFactory.Create();
+        var pageEntity = PageEntityFactory.Create<TPage>(Driver, eventBus);
 
-        var pageObjectRegistry = _pageObjectRegistryFactory.Create(pageObject);
-        pageObjectRegistry?.RegisterComponents(pageObject);
+        var pageEntityRegistry = PageEntityRegistryFactory.Create(pageEntity);
+        pageEntityRegistry?.RegisterComponents(pageEntity);
 
-        pageObject.InitializeLazyComponents();
+        pageEntity.AssembleGraph();
+        pageEntity.InitializeLazyComponents();
 
-        var navigation = _navigationStrategyFactory.Create<TNavigation>();
-        await navigation.Navigate(_driver, pageObject);
+        var navigation = NavigationStrategyFactory.Create<TNavigation>();
+        await navigation.Navigate(Driver, pageEntity);
 
-        await pageObject.WaitUntilReady();
+        await pageEntity.WaitUntilReady();
 
-        return pageObject;
+        return pageEntity;
     }
 }

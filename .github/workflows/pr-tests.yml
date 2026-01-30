@@ -24,8 +24,5 @@ jobs:
       - name: Build the project
         run: dotnet build --configuration Release
 
-      - name: Run unit tests for Utility
-        run: dotnet test ${{ github.workspace }}/AD.Exodius.Utility.UnitTests/AD.Exodius.Utility.UnitTests.csproj --configuration Release --no-build --verbosity normal
-
-      - name: Run unit tests for Main UnitTests
-        run: dotnet test ${{ github.workspace }}/AD.Exodius.UnitTests/AD.Exodius.UnitTests.csproj --configuration Release --no-build --verbosity normal
+      - name: Run unit tests for Exodius UnitTests
+        run: dotnet test ${{ github.workspace }}/AD.Exodius.Tests/AD.Exodius.Tests.csproj --configuration Release --no-build --verbosity normal

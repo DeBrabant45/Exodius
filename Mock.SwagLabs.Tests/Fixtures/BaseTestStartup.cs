@@ -1,70 +1,74 @@
-﻿using AD.Exodius.Configurations;
-using AD.Exodius.Drivers;
-using AD.Exodius.Drivers.Factories;
-using AD.Exodius.Navigators;
-using AD.Exodius.Navigators.Factories;
-using Mock.SwagLabs.Configurations;
-using Mock.SwagLabs.Configurations.Models;
-using Mock.SwagLabs.Tests.Services;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Mock.SwagLabs.Utilities;
 using NUnit.Framework;
-
-[assembly: LevelOfParallelism(4)]
 
 namespace Mock.SwagLabs.Tests.Fixtures;
 
+/// <summary>
+/// Provides a base class for test suites that require dependency injection and per-test scoped services.
+/// Manages a service scope lifecycle and exposes resolved services to tests.
+/// </summary>
 public abstract class BaseTestStartup
 {
-    protected IDriver Driver { get; private set; } = null!;
-    protected INavigator Navigator { get; private set; } = null!;
-    protected DriverSettings DriverSettings { get; private set; }
-    protected ApplicationSettings ApplicationSettings { get; private set; }
-    protected static ReportingService ReportingService { get; set; } = null!;
-    protected IServiceProvider ServiceProvider => ServiceCollectionProvider.ServiceProvider;
+    private IServiceScope _scope = null!;
 
-    protected BaseTestStartup()
-    {
-        DriverSettings = DriverConfigurationReader.Read();
-        ApplicationSettings = AppsettingConfigurationReader.Read();
-    }
-
+    /// <summary>
+    /// Called once before any tests are executed.
+    /// Override to perform global setup logic for the test class.
+    /// </summary>
     [OneTimeSetUp]
-    public static void GlobalSetup()
+    public virtual Task OnOneTimeSetUpAsync()
     {
-        ReportingService = new ReportingService("test-results.html");
+        return Task.CompletedTask;
     }
 
-    [SetUp]
-    public async Task SetUp()
-    {
-        Driver = new DriverFactory().Create(DriverSettings);
-        Navigator = new NavigatorFactory().Create<Navigator>(Driver);
-        ReportingService.CreateTest(TestContext.CurrentContext);
-
-        await SetUpInternal();
-    }
-
-    protected virtual async Task SetUpInternal()
-    {
-        await Driver.OpenPage();
-        await Driver.GoToUrl(ApplicationSettings.BaseUrl);
-    }
-
-    [TearDown]
-    public async Task TearDown()
-    {
-        ReportingService.LogTestResult(TestContext.CurrentContext);
-        await TearDownInternal();
-    }
-
-    protected virtual async Task TearDownInternal()
-    {
-        await Driver.ClosePage();
-        Driver.Dispose();
-    }
-
+    /// <summary>
+    /// Called once after all tests have finished.
+    /// Override to perform global teardown logic for the test class.
+    /// </summary>
     [OneTimeTearDown]
-    public static void GlobalTeardown()
+    public virtual Task OnOneTimeTearDownAsync()
     {
-        ReportingService.FlushReports();
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Called before each test is executed.
+    /// Initializes a new service scope and allows per-test setup logic.
+    /// </summary>
+    [SetUp]
+    protected virtual Task OnSetUpAsync()
+    {
+        _scope = ServiceProviderFactory.CreateScope();
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Called after each test has completed.
+    /// Disposes the test's service scope and allows per-test cleanup logic.
+    /// </summary>
+    [TearDown]
+    protected virtual Task OnTearDownAsync()
+    {
+        _scope.Dispose();
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Resolves a required service from the current test scope.
+    /// </summary>
+    /// <typeparam name="TService">The type of service to retrieve.</typeparam>
+    /// <returns>The resolved service instance.</returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if the service scope is not initialized or the service is not registered.
+    /// </exception>
+    protected TService GetService<TService>() where TService : notnull
+    {
+        if (_scope is null)
+        {
+            throw new InvalidOperationException("The service scope is not initialized. Ensure OnSetUpAsync was executed.");
+        }
+
+        return _scope.ServiceProvider.GetRequiredService<TService>();
     }
 }

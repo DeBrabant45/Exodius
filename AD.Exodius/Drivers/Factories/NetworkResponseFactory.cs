@@ -6,6 +6,9 @@ public class NetworkResponseFactory : INetworkResponseFactory
 {
     public TNetworkResponse Create<TNetworkResponse>(Task<IResponse> response) where TNetworkResponse : INetworkResponse
     {
-        return (TNetworkResponse)Activator.CreateInstance(typeof(TNetworkResponse), response);
+        var instance = Activator.CreateInstance(typeof(TNetworkResponse), response)
+            ?? throw new InvalidOperationException($"Failed to create an instance of {typeof(TNetworkResponse).Name}.");
+
+        return (TNetworkResponse)instance;
     }
 }

@@ -2,7 +2,7 @@
 
 public interface IInputElement<T>
 {
-    public Task TypeInput(T input);
-    public Task VisibilityTypeInput(T input);
-    public Task PressKey(KeyCode key);
+    public Task TypeInputAsync(T input);
+    public Task VisibilityTypeInputAsync(T input);
+    public Task PressKeyAsync(KeyCode key);
 }

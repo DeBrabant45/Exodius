@@ -1,5 +1,4 @@
-﻿using AD.Exodius.Utility.Primitives;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace AD.Exodius.Elements;
 
@@ -12,72 +11,60 @@ public abstract class BaseElement : IElement
         Locator = locator;
     }
 
-    public async Task<string> GetValue() => await Locator.InputValueAsync();
+    public async Task<string> GetValueAsync() => await Locator.InputValueAsync();
 
-    public async Task<string> GetText() => await Locator.InnerTextAsync();
+    public async Task<string> GetTextAsync() => await Locator.InnerTextAsync();
 
-    public async Task<TPrimitive> GetTextAsType<TPrimitive>()
+    public async Task<string> FindTextAsync()
     {
-        var rawText = await GetText();
-        return rawText.ConvertToType<TPrimitive>();
-    }
-
-    public async Task<string> FindText()
-    {
-        if (!await IsVisible())
+        if (!await IsVisibleAsync())
             return string.Empty;
 
-        return await GetText();
+        return await GetTextAsync();
     }
 
-    public async Task<TPrimitive> FindTextAsType<TPrimitive>()
+    public async Task<string> GetNumericTextAsync() => ExtractNumericValues(await GetTextAsync());
+
+    public async Task<string> FindNumericTextAsync() => ExtractNumericValues(await FindTextAsync());
+
+    public async Task<bool> IsEnabledAsync() => await Locator.IsEnabledAsync();
+
+    public async Task<bool> IsAttributePresentAsync(string attribute, string value) => await Locator.GetAttributeAsync(attribute) == value;
+
+    public async Task<bool> IsVisibleAsync() => await Locator.IsVisibleAsync();
+
+    public async Task<bool> IsHiddenAsync() => await Locator.IsHiddenAsync();
+
+    public async Task FocusAsync() => await Locator.FocusAsync();
+
+    public async Task HoverAsync() => await Locator.HoverAsync();
+
+    public async Task WaitUntilVisibleAsync(float timeout = 30f)
     {
-        var rawText = await FindText();
-        return rawText.ConvertToType<TPrimitive>();
+        await WaitUntilAsync(timeout, WaitForSelectorState.Visible);
     }
 
-    public async Task<string> GetNumericText() => ExtractNumericValues(await GetText());
-
-    public async Task<string> FindNumericText() => ExtractNumericValues(await FindText());
-
-    public async Task<bool> IsEnabled() => await Locator.IsEnabledAsync();
-
-    public async Task<bool> IsAttributePresent(string attribute, string value) => await Locator.GetAttributeAsync(attribute) == value;
-
-    public async Task<bool> IsVisible() => await Locator.IsVisibleAsync();
-
-    public async Task<bool> IsHidden() => await Locator.IsHiddenAsync();
-
-    public async Task Focus() => await Locator.FocusAsync();
-
-    public async Task Hover() => await Locator.HoverAsync();
-
-    public async Task WaitUntilVisible(float timeout = 30f)
+    public async Task WaitUntilHiddenAsync(float timeout = 30f)
     {
-        await WaitUntil(timeout, WaitForSelectorState.Visible);
+        await WaitUntilAsync(timeout, WaitForSelectorState.Hidden);
     }
 
-    public async Task WaitUntilHidden(float timeout = 30f)
-    {
-        await WaitUntil(timeout, WaitForSelectorState.Hidden);
-    }
-
-    private async Task WaitUntil(float timeout, WaitForSelectorState state)
+    private async Task WaitUntilAsync(float timeout, WaitForSelectorState state)
     {
         await Locator.WaitForAsync(new() { State = state, Timeout = timeout * 1000 });
     }
 
-    public async Task WaitUntilVisibleNoException(float timeout = 30f)
+    public async Task WaitUntilVisibleNoExceptionAsync(float timeout = 30f)
     {
-        await WaitUntilNoException(WaitUntilVisible, timeout);
+        await WaitUntilNoExceptionAsync(WaitUntilVisibleAsync, timeout);
     }
 
-    public async Task WaitUntilHiddenNoException(float timeout = 30f)
+    public async Task WaitUntilHiddenNoExceptionAsync(float timeout = 30f)
     {
-        await WaitUntilNoException(WaitUntilHidden, timeout);
+        await WaitUntilNoExceptionAsync(WaitUntilHiddenAsync, timeout);
     }
 
-    private async Task WaitUntilNoException(Func<float, Task> action, float timeout = 30f)
+    private async Task WaitUntilNoExceptionAsync(Func<float, Task> action, float timeout = 30f)
     {
         try
         {

@@ -15,7 +15,7 @@ public interface INavigationService
     /// <param name="url">The URL to navigate to.</param>
     /// <param name="errorBehavior">Specifies how navigation errors should be handled. The default behavior is to throw an exception for navigation errors. If set to <see cref="ErrorBehavior.LogException"/>, navigation errors (like a 500 server error) are logged, but the operation continues.</param>
     /// <returns>A task representing the asynchronous navigation operation.</returns>
-    public Task GoToUrl(string url, ErrorBehavior errorBehavior = ErrorBehavior.ThrowException);
+    public Task GoToUrlAsync(string url, ErrorBehavior errorBehavior = ErrorBehavior.ThrowException);
 
     /// <summary>
     /// Navigates to the first available URL from a collection of URLs, trying them in order until one succeeds.
@@ -29,13 +29,13 @@ public interface INavigationService
     /// </returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="urls"/> is null.</exception>
     /// <exception cref="InvalidOperationException">Thrown if navigation to all provided URLs fails, meaning all URLs in <paramref name="urls"/> could not be reached or redirected to the expected page.</exception>
-    public Task GoToUrl(IEnumerable<string> urls);
+    public Task GoToUrlAsync(IEnumerable<string> urls);
 
     /// <summary>
     /// Refreshes the current page.
     /// </summary>
     /// <returns>A task representing the asynchronous refresh operation.</returns>
-    public Task Refresh();
+    public Task RefreshAsync();
 
     /// <summary>
     /// Switches to the default page.
@@ -53,14 +53,14 @@ public interface INavigationService
     /// </summary>
     /// <param name="clickableElement">The clickable element that triggers the navigation.</param>
     /// <returns>A task representing the asynchronous navigation operation.</returns>
-    public Task SwitchToNewPage(IClickElement clickableElement);
+    public Task SwitchToNewPageAsync(IClickElement clickableElement);
 
     /// <summary>
     /// Cancels the request for the specified URL.
     /// </summary>
     /// <param name="url">The URL of the request to abort.</param>
     /// <returns>A task representing the asynchronous request cancellation operation.</returns>
-    public Task CancelRequest(string url);
+    public Task CancelRequestAsync(string url);
 
     /// <summary>
     /// Gets the current URL of the page.

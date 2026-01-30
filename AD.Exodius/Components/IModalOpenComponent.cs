@@ -1,4 +1,4 @@
-﻿using AD.Exodius.Modals;
+﻿using AD.Exodius.Entities.Modals;
 
 namespace AD.Exodius.Components;
 
@@ -11,10 +11,10 @@ public interface IModalOpenComponent
     /// <summary>
     /// Opens a modal of the specified type.
     /// </summary>
-    /// <typeparam name="TModalObject">The type of the modal object to open.</typeparam>
+    /// <typeparam name="TModalEntity">The type of the modal entity to open.</typeparam>
     /// <returns>
     /// A task that represents the asynchronous operation of opening the modal.
-    /// The task result contains an instance of the modal object.
+    /// The task result contains an instance of the modal entity.
     /// </returns>
-    public Task<TModalObject> OpenModal<TModalObject>() where TModalObject : ModalObject;
+    public Task<TModalEntity> OpenModal<TModalEntity>() where TModalEntity : IModalEntity;
 }

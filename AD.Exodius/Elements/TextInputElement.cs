@@ -7,7 +7,7 @@ public class TextInputElement : BaseInputElement<string>
 
     }
 
-    public override async Task TypeInput(string input)
+    public override async Task TypeInputAsync(string input)
     {
         if (string.IsNullOrEmpty(input))
             return;
@@ -15,11 +15,11 @@ public class TextInputElement : BaseInputElement<string>
         await Locator.FillAsync(input);
     }
 
-    public override async Task VisibilityTypeInput(string input)
+    public override async Task VisibilityTypeInputAsync(string input)
     {
-        if (!await IsVisible())
+        if (!await IsVisibleAsync())
             return;
 
-        await TypeInput(input);
+        await TypeInputAsync(input);
     }
 }

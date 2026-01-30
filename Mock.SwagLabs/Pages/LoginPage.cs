@@ -1,18 +1,23 @@
-﻿using AD.Exodius.Locators;
-using AD.Exodius.Pages;
-using AD.Exodius.Pages.Attributes;
+﻿using AD.Exodius.Entities.Pages;
+using AD.Exodius.Entities.Pages.Attributes;
+using AD.Exodius.Entities.Pages.Registries;
+using AD.Exodius.Events;
+using AD.Exodius.Locators;
 using Mock.SwagLabs.Components;
 using Mock.SwagLabs.Pages.Models;
 
 namespace Mock.SwagLabs.Pages;
 
-[PageObjectRoute("/")]
-public class LoginPage : PageObject
+[PageEntityMeta(
+    Route = "/",
+    Registry = typeof(LoginPageRegistry)
+)]
+public class LoginPage : PageEntity
 {
-    public LoginPage(IDriver driver) 
-        : base(driver)
+    public LoginPage(IDriver driver, IEventBus eventBus)
+        : base(driver, eventBus)
     {
-        AddComponent<WaitComponent>();
+
     }
 
     private TextInputElement UserNameTextbox => Driver.FindElement<ById,TextInputElement>("user-name");
@@ -22,14 +27,22 @@ public class LoginPage : PageObject
 
     public async Task<LoginPage> Login(Login login)
     {
-        await UserNameTextbox.TypeInput(login.Username);
-        await PasswordTextbox.TypeInput(login.Password);
-        await LoginButton.Click();
+        await UserNameTextbox.TypeInputAsync(login.Username);
+        await PasswordTextbox.TypeInputAsync(login.Password);
+        await LoginButton.ClickAsync();
 
         return this;
     }
 
-    public async Task<bool> IsErrorMessagePresent() => await ErrorMessage.IsVisible();
+    public async Task<bool> IsErrorMessagePresent() => await ErrorMessage.IsVisibleAsync();
 
-    public async Task<string> GetErrorMessageText() => await ErrorMessage.GetText();
+    public async Task<string> GetErrorMessageText() => await ErrorMessage.GetTextAsync();
+}
+
+public class LoginPageRegistry : IPageEntityRegistry
+{
+    public void RegisterComponents<TPage>(TPage page) where TPage : IPageEntity
+    {
+        page.AddComponent<WaitComponent>();
+    }
 }

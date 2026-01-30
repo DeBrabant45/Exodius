@@ -11,27 +11,33 @@ public class NetworkResponse : INetworkResponse
         _response = response;
     }
 
-    public async Task<T> JsonResponse<T>()
+    public async Task<T> GetJsonResponseAsync<T>()
     {
         var response = await _response;
         return await response.JsonAsync<T>();
     }
 
-    public async Task<JsonElement?> JsonResponse()
+    public async Task<JsonElement?> GetJsonResponseAsync()
     {
         var response = await _response;
         return await response.JsonAsync();
     }
 
-    public async Task<byte[]> Body()
+    public async Task<byte[]> GetBodyAsync()
     {
         var response = await _response;
         return await response.BodyAsync();
     }
 
-    public async Task<JsonElement> Payload()
+    public async Task<JsonElement?> GetPayloadAsync()
     {
         var response = await _response;
-        return response.Request.PostDataJSON().Value;
+        return response.Request?.PostDataJSON();
+    }
+
+    public async Task<string> GetRequestUrlAsync()
+    {
+        var response = await _response;
+        return response.Request.Url;
     }
 }

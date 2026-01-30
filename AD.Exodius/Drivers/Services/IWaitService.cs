@@ -13,7 +13,7 @@ public interface IWaitService
     /// Note, this should be used sparingly as it could lead to timeouts on certain pages.
     /// </summary>
     /// <returns>A task representing the asynchronous operation of waiting for DOMContentLoaded.</returns>
-    public Task WaitForDomContentLoaded();
+    public Task WaitForDomContentLoadedAsync();
 
     /// <summary>
     /// Waits for the specified timeout duration.
@@ -23,7 +23,7 @@ public interface IWaitService
     /// </remarks>
     /// <param name="timeout">The timeout duration in seconds.</param>
     /// <returns>A task representing the asynchronous operation of waiting for the specified timeout duration.</returns>
-    public Task WaitForTimeout(float timeout);
+    public Task WaitForTimeoutAsync(float timeout);
 
     /// <summary>
     /// Waits for navigation to complete after clicking on the specified clickable element.
@@ -33,5 +33,5 @@ public interface IWaitService
     /// <remarks>
     /// This method performs a click action on the specified clickable element and waits for the navigation to complete.
     /// </remarks>
-    public Task WaitForNavigation(IClickElement clickableElement);
+    public Task WaitForNavigationAsync(IClickElement clickableElement);
 }

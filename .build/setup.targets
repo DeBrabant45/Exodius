@@ -1,0 +1,44 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SetupDoneFile>$(ProjectDir)..\setup.done</SetupDoneFile>
+
+    <!-- Set PowerShell command for Windows and Linux -->
+    <PowerShellCommand Condition="'$(OS)' == 'Windows_NT'">powershell</PowerShellCommand>
+    <PowerShellCommand Condition="'$(OS)' != 'Windows_NT'">pwsh</PowerShellCommand>
+  </PropertyGroup>
+
+  <Target Name="AfterBuildOneTimeSetup"
+          AfterTargets="Build"
+          Condition="!Exists('$(SetupDoneFile)')">
+
+    <Message Text="Target 'AfterBuildOneTimeSetup' is running..." Importance="high" />
+
+    <!-- Windows: Run setup.bat if setup.done doesn't exist -->
+    <Exec Condition="'$(OS)' == 'Windows_NT'"
+          Command="cmd.exe /c &quot;$(ProjectDir)..\setup.bat&quot;" />
+
+    <!-- Linux/Mac: Run setup.sh if setup.done doesn't exist -->
+    <Exec Condition="'$(OS)' != 'Windows_NT'"
+          Command="bash $(ProjectDir)..\setup.sh" />
+
+    <Message Text="Target 'AfterBuildOneTimeSetup' Pre-setup has completed..." Importance="high" />
+
+    <!-- Install Core Driver dependencies -->
+    <!-- Non-Windows: Only install Chromium dependencies -->
+    <Exec Condition="'$(OS)' != 'Windows_NT'"
+          Command='$(PowerShellCommand) -ExecutionPolicy Bypass -File "$(TargetDir)playwright.ps1" install-deps chromium' />
+
+    <!-- Windows: Full Core Driver install -->
+    <Exec Condition="'$(OS)' == 'Windows_NT'"
+          Command='$(PowerShellCommand) -ExecutionPolicy Bypass -File "$(TargetDir)playwright.ps1" install' />
+
+    <Message Text="Target 'AfterBuildOneTimeSetup' PW install has completed..." Importance="high" />
+
+    <!-- Step 3: Write setup done marker -->
+    <WriteLinesToFile File="$(SetupDoneFile)"
+                      Lines="Setup completed, delete this file and build solution again to re-trigger install."
+                      Overwrite="true" />
+
+    <Message Text="Target 'AfterBuildOneTimeSetup' Setup completed and setup.done file written." Importance="high" />
+  </Target>
+</Project>

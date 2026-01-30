@@ -11,9 +11,9 @@ namespace AD.Exodius.Drivers;
 
 public class PageDriver : IDriver
 {
-    private IPage _page;
-    private IBrowser _browser;
-    private IPlaywright _playwright;
+    private IPage _page = null!;
+    private IBrowser _browser = null!;
+    private IPlaywright _playwright = null!;
     private readonly IPageFactory _pageFactory;
     private readonly ILocatorStrategyFactory _locatorStrategyFactory;
     private readonly IBrowserFactory _browserFactory;
@@ -40,14 +40,14 @@ public class PageDriver : IDriver
         _pathResolver = pathResolver;
     }
 
-    public async Task OpenPage()
+    public async Task OpenPageAsync()
     {
-        await StartNodeJsRuntime();
-        _browser = await _browserFactory.CreateBrowser(_playwright, _driverSettings.BrowserSettings);
+        await StartNodeJsRuntimeAsync();
+        _browser = await _browserFactory.CreateBrowserAsync(_playwright, _driverSettings.BrowserSettings);
         _page = await _pageFactory.CreatePage(_browser);
     }
 
-    private async Task StartNodeJsRuntime()
+    private async Task StartNodeJsRuntimeAsync()
     {
         if (_playwright != null)
             return;
@@ -55,7 +55,7 @@ public class PageDriver : IDriver
         _playwright = await Playwright.CreateAsync();
     }
 
-    public async Task GoToUrl(string url, ErrorBehavior errorBehavior = ErrorBehavior.ThrowException)
+    public async Task GoToUrlAsync(string url, ErrorBehavior errorBehavior = ErrorBehavior.ThrowException)
     {
         try
         {
@@ -71,21 +71,21 @@ public class PageDriver : IDriver
         }
     }
 
-    public async Task GoToUrl(IEnumerable<string> urls)
+    public async Task GoToUrlAsync(IEnumerable<string> urls)
     {
         foreach (var currentUrl in urls)
         {
             try
             {
                 await _page.GotoAsync(currentUrl);
-                await WaitForNetworkIdle(5, ErrorBehavior.LogException);
+                await WaitForNetworkIdleAsync(5, ErrorBehavior.LogException);
 
                 if (CurrentUrl().Contains(currentUrl))
                     return;
             }
             catch (PlaywrightException ex)
             {
-                await WaitForNetworkIdle(5, ErrorBehavior.LogException);
+                await WaitForNetworkIdleAsync(5, ErrorBehavior.LogException);
 
                 Console.WriteLine($"Failed to navigate to {currentUrl}: {ex.Message}");
             }
@@ -95,7 +95,7 @@ public class PageDriver : IDriver
             $"Unable to navigate to any of the provided URLs: {string.Join(", ", urls)}.");
     }
 
-    private async Task WaitForNetworkIdle(int timeoutInSeconds, ErrorBehavior errorBehavior)
+    private async Task WaitForNetworkIdleAsync(int timeoutInSeconds, ErrorBehavior errorBehavior)
     {
         try
         {
@@ -111,7 +111,7 @@ public class PageDriver : IDriver
         }
     }
 
-    public async Task ClosePage()
+    public async Task ClosePageAsync()
     {
         await _page.Context.CloseAsync();
         await _page.CloseAsync();
@@ -123,7 +123,7 @@ public class PageDriver : IDriver
         await _browser.DisposeAsync();
     }
 
-    public async Task Refresh()
+    public async Task RefreshAsync()
     {
         await _page.ReloadAsync();
     }
@@ -142,27 +142,27 @@ public class PageDriver : IDriver
         return newUrl;
     }
 
-    public async Task ClosePage(int index)
+    public async Task ClosePageAsync(int index)
     {
         await _page.Context.Pages[index].CloseAsync();
     }
 
-    public async Task WaitForDomContentLoaded()
+    public async Task WaitForDomContentLoadedAsync()
     {
         await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
     }
 
-    public async Task WaitForNavigation(IClickElement clickableElement)
+    public async Task WaitForNavigationAsync(IClickElement clickableElement)
     {
-        await _page.RunAndWaitForNavigationAsync(clickableElement.Click);
+        await _page.RunAndWaitForNavigationAsync(clickableElement.ClickAsync);
     }
 
-    public async Task WaitForTimeout(float timeout)
+    public async Task WaitForTimeoutAsync(float timeout)
     {
         await _page.WaitForTimeoutAsync(timeout);
     }
 
-    public async Task SaveCookieSession()
+    public async Task SaveCookieSessionAsync()
     {
         await _page.Context.StorageStateAsync(new()
         {
@@ -170,9 +170,9 @@ public class PageDriver : IDriver
         });
     }
 
-    public async Task SwitchToNewPage(IClickElement clickableElement)
+    public async Task SwitchToNewPageAsync(IClickElement clickableElement)
     {
-        _page = await _page.Context.RunAndWaitForPageAsync(clickableElement.Click);
+        _page = await _page.Context.RunAndWaitForPageAsync(clickableElement.ClickAsync);
     }
 
     public void SwitchToPage(int index)
@@ -185,12 +185,12 @@ public class PageDriver : IDriver
         _page = _page.Context.Pages.First();
     }
 
-    public async Task StartDiagnostics(string testName)
+    public async Task StartDiagnosticsAsync(string testName)
     {
-        await StartTrace(testName);
+        await StartTraceAsync(testName);
     }
 
-    private async Task StartTrace(string testName)
+    private async Task StartTraceAsync(string testName)
     {
         var traceSettings = _driverSettings.TraceSettings;
 
@@ -207,7 +207,7 @@ public class PageDriver : IDriver
         });
     }
 
-    public async Task StopDiagnostics(TestResults testResults)
+    public async Task StopDiagnosticsAsync(TestResults testResults)
     {
         var captureType = _driverSettings.TraceSettings.CaptureType;
 
@@ -286,7 +286,7 @@ public class PageDriver : IDriver
         }
     }
 
-    public async Task CancelRequest(string url)
+    public async Task CancelRequestAsync(string url)
     {
         await _page.RouteAsync(url, async (route) =>
         {
@@ -294,7 +294,7 @@ public class PageDriver : IDriver
         });
     }
 
-    public async Task AddToken(string tokenAccess, string baseUrl)
+    public async Task AddTokenAsync(string tokenAccess, string baseUrl)
     {
         await _page.Context.AddCookiesAsync(new[]
         {

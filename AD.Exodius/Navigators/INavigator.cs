@@ -1,5 +1,5 @@
-﻿using AD.Exodius.Navigators.Strategies;
-using AD.Exodius.Pages;
+﻿using AD.Exodius.Entities.Pages;
+using AD.Exodius.Navigators.Strategies;
 
 namespace AD.Exodius.Navigators;
 
@@ -15,5 +15,5 @@ public interface INavigator
     /// <typeparam name="TPage">The type of the web page to navigate to.</typeparam>
     /// <typeparam name="TNavigation">The type of the navigation strategy to be used.</typeparam>
     /// <returns>A task representing the asynchronous operation, with a result of the specified page type <typeparamref name="TPage"/>.</returns>
-    public Task<TPage> GoTo<TPage, TNavigation>() where TPage : IPageObject where TNavigation : INavigationStrategy;
+    public Task<TPage> GoToAsync<TPage, TNavigation>() where TPage : IPageEntity where TNavigation : INavigationStrategy;
 }

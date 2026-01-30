@@ -4,19 +4,19 @@ namespace AD.Exodius.Drivers.Factories;
 
 public class BrowserFactory : IBrowserFactory
 {
-    public async Task<IBrowser> CreateBrowser(IPlaywright playwright, BrowserSettings settings)
+    public async Task<IBrowser> CreateBrowserAsync(IPlaywright playwright, BrowserSettings settings)
     {
         return settings.Browser switch
         {
-            Browser.Chrome => await CreateChromeDriver(playwright, settings),
-            Browser.Firefox => await CreateFirefoxDriver(playwright, settings),
-            Browser.Edge => await CreateEdgeDriver(playwright, settings),
-            Browser.Chromium => await CreateChromiumDriver(playwright, settings),
-            _ => await CreateChromiumDriver(playwright, settings)
+            Browser.Chrome => await CreateChromeDriverAsync(playwright, settings),
+            Browser.Firefox => await CreateFirefoxDriverAsync(playwright, settings),
+            Browser.Edge => await CreateEdgeDriverAsync(playwright, settings),
+            Browser.Chromium => await CreateChromiumDriverAsync(playwright, settings),
+            _ => await CreateChromiumDriverAsync(playwright, settings)
         };
     }
 
-    private async Task<IBrowser> CreateChromeDriver(IPlaywright playwright, BrowserSettings settings)
+    private async Task<IBrowser> CreateChromeDriverAsync(IPlaywright playwright, BrowserSettings settings)
     {
         var options = CreateBrowserTypeOtions(settings);
         options.Channel = "chrome";
@@ -24,7 +24,7 @@ public class BrowserFactory : IBrowserFactory
         return await playwright.Chromium.LaunchAsync(options);
     }
 
-    private async Task<IBrowser> CreateFirefoxDriver(IPlaywright playwright, BrowserSettings settings)
+    private async Task<IBrowser> CreateFirefoxDriverAsync(IPlaywright playwright, BrowserSettings settings)
     {
         var options = CreateBrowserTypeOtions(settings);
         options.Channel = "firefox";
@@ -32,7 +32,7 @@ public class BrowserFactory : IBrowserFactory
         return await playwright.Firefox.LaunchAsync(options);
     }
 
-    private async Task<IBrowser> CreateChromiumDriver(IPlaywright playwright, BrowserSettings settings)
+    private async Task<IBrowser> CreateChromiumDriverAsync(IPlaywright playwright, BrowserSettings settings)
     {
         var options = CreateBrowserTypeOtions(settings);
         options.Channel = "chromium";
@@ -40,7 +40,7 @@ public class BrowserFactory : IBrowserFactory
         return await playwright.Chromium.LaunchAsync(options);
     }
 
-    private async Task<IBrowser> CreateEdgeDriver(IPlaywright playwright, BrowserSettings settings)
+    private async Task<IBrowser> CreateEdgeDriverAsync(IPlaywright playwright, BrowserSettings settings)
     {
         var options = CreateBrowserTypeOtions(settings);
         options.Channel = "msedge";

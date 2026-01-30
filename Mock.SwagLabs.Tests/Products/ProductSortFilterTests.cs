@@ -1,9 +1,9 @@
-﻿using AD.Exodius.Navigators.Strategies;
-using AD.Exodius.Utility.Assertions;
-using AD.Exodius.Utility.Tasks;
+﻿using AD.Exodius.Helpers;
+using AD.Exodius.Navigators.Strategies;
 using Mock.SwagLabs.Components;
 using Mock.SwagLabs.Components.Enums;
 using Mock.SwagLabs.Pages;
+using Mock.SwagLabs.Tests.Assertions;
 using Mock.SwagLabs.Tests.Fixtures;
 using NUnit.Framework;
 
@@ -20,7 +20,7 @@ public class ProductSortFilterTests : BypassLoginTestStartup
         SortOrder expectedSortOrder)
     {
         var productsPage = await Navigator
-            .GoTo<ProductsPage, ByAction>();
+            .GoToAsync<ProductsPage, ByAction>();
 
         var productSortFilter = await productsPage
             .GetComponent<IProductSortComponent>()
@@ -42,7 +42,7 @@ public class ProductSortFilterTests : BypassLoginTestStartup
         SortOrder expectedSortOrder)
     {
         var productsPage = await Navigator
-            .GoTo<ProductsPage, ByRoute>();
+            .GoToAsync<ProductsPage, ByRoute>();
 
         var productSortFilter = await productsPage
             .GetComponent<IProductSortComponent>()

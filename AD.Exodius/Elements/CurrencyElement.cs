@@ -8,15 +8,15 @@ public class CurrencyElement : BaseInputElement<decimal>
 
     }
 
-    public override async Task VisibilityTypeInput(decimal input)
+    public override async Task VisibilityTypeInputAsync(decimal input)
     {
-        if (!await IsVisible())
+        if (!await IsVisibleAsync())
             return;
 
-        await TypeInput(input);
+        await TypeInputAsync(input);
     }
 
-    public override async Task TypeInput(decimal input)
+    public override async Task TypeInputAsync(decimal input)
     {
         await Locator.FillAsync(input.ToString("0.00").Replace(".00", string.Empty));
     }

@@ -1,10 +1,12 @@
-﻿namespace AD.Exodius.Components;
+﻿using AD.Exodius.Components;
+
+namespace AD.Exodius.Components;
 
 /// <summary>
 /// Represents a component capable of performing navigation actions.
 /// </summary>
 /// <author>Aaron DeBrabant</author>
-public interface INavigationActionComponent : IPageComponent
+public interface INavigationActionComponent : IEntityComponent
 {
     /// <summary>
     /// Performs a click action on the specified navigation item.

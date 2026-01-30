@@ -11,61 +11,61 @@ public class CheckboxElement : BaseElement
     /// <para>Performs a standard check.</para>
     /// <para>Action will throw an error if element is not present.</para>
     /// </summary>
-    public async Task Check() => await Locator.CheckAsync();
+    public async Task CheckAsync() => await Locator.CheckAsync();
 
     /// <summary>
     /// <para>Performs a standard uncheck.</para>
     /// <para>Action will throw an error if element is not present.</para>
     /// </summary>
-    public async Task Uncheck() => await Locator.UncheckAsync();
+    public async Task UncheckAsync() => await Locator.UncheckAsync();
 
     /// <summary>
     /// <para>Performs a standard uncheck if element is visible on the page.</para>
     /// <para>Action will be returned and no error will be thrown if element is not present.</para> 
     /// </summary>
-    public async Task VisibilityUncheck()
+    public async Task VisibilityUncheckAsync()
     {
-        if (!await IsVisible())
+        if (!await IsVisibleAsync())
             return;
 
-        await Uncheck();
+        await UncheckAsync();
     }
 
     /// <summary>
     /// <para>Performs a standard check if element is visible on the page.</para>
     /// <para>Action will be returned and no error will be thrown if element is not present.</para> 
     /// </summary>
-    public async Task VisibilityCheck()
+    public async Task VisibilityCheckAsync()
     {
-        if (!await IsVisible())
+        if (!await IsVisibleAsync())
             return;
 
-        await Check();
+        await CheckAsync();
     }
 
     /// <summary>
     /// <para>Performs a standard check/uncheck.</para>
     /// <para>Action will throw an error if element is not present.</para>
     /// </summary>
-    public async Task SetChecked(bool enable)
+    public async Task SetCheckedAsync(bool enable)
     {
         if (enable)
         {
-            await Check();
+            await CheckAsync();
             return;
         }
-        await Uncheck();
+        await UncheckAsync();
     }
 
     /// <summary>
     /// <para>Performs a standard check/uncheck if element is visible on the page.</para>
     /// <para>Action will be returned and no error will be thrown if element is not present.</para> 
     /// </summary>
-    public async Task VisibilitySetChecked(bool enable)
+    public async Task VisibilitySetCheckedAsync(bool enable)
     {
-        if (!await IsVisible())
+        if (!await IsVisibleAsync())
             return;
 
-        await SetChecked(enable);
+        await SetCheckedAsync(enable);
     }
 }

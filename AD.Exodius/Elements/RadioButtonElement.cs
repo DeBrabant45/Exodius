@@ -8,7 +8,7 @@ public class RadioButtonElement : BaseClickElement
 
     }
 
-    public override async Task Click()
+    public override async Task ClickAsync()
     {
         if (await Locator.IsCheckedAsync())
             return;
@@ -16,12 +16,12 @@ public class RadioButtonElement : BaseClickElement
         await Locator.ClickAsync();
     }
 
-    public override async Task ForceClick()
+    public override async Task ForceClickAsync()
     {
         if (await Locator.IsCheckedAsync())
             return;
 
-        await Focus();
+        await FocusAsync();
         await Locator.ClickAsync(new() { Force = true });
     }
 }

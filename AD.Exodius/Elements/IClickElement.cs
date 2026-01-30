@@ -2,9 +2,9 @@
 
 public interface IClickElement
 {
-    public Task Click();
-    public Task Click(bool shouldClick);
-    public Task ForceClick();
-    public Task ForceClick(bool shouldForceClick);
-    public Task NoHoverClick();
+    public Task ClickAsync();
+    public Task ClickAsync(bool shouldClick);
+    public Task ForceClickAsync();
+    public Task ForceClickAsync(bool shouldForceClick);
+    public Task NoHoverClickAsync();
 }

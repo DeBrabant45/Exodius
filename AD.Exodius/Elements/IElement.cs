@@ -9,7 +9,7 @@ public interface IElement
     /// </para>
     /// </summary>
     /// <param name="options">Call options</param>
-    public Task<string> GetValue();
+    public Task<string> GetValueAsync();
 
     /// <summary>
     /// <para>
@@ -17,20 +17,7 @@ public interface IElement
     /// </para>
     /// </summary>
     /// <param name="options">Call options</param>
-    public Task<string> GetText();
-
-    /// <summary>
-    /// Retrieves the text and converts it to the specified type.
-    /// </summary>
-    /// <typeparam name="TPrimitive">The type to which the text should be converted.</typeparam>
-    /// <returns>
-    /// A <typeparamref name="TPrimitive"/> representing the converted text.
-    /// </returns>
-    /// <remarks>
-    /// This method asynchronously retrieves the raw text and converts it to the specified primitive type using 
-    /// the <see cref="ConvertToType{TPrimitive}(string)"/> method.
-    /// </remarks>
-    public Task<TPrimitive> GetTextAsType<TPrimitive>();
+    public Task<string> GetTextAsync();
 
     /// <summary>
     /// <para>
@@ -40,26 +27,13 @@ public interface IElement
     /// </summary>
     /// <returns></returns>
     /// <param name="options">Call options</param>
-    public Task<string> FindText();
-
-    /// <summary>
-    /// Finds the text and converts it to the specified type.
-    /// </summary>
-    /// <typeparam name="TPrimitive">The type to which the text should be converted.</typeparam>
-    /// <returns>
-    /// A <typeparamref name="TPrimitive"/> representing the converted text.
-    /// </returns>
-    /// <remarks>
-    /// This method asynchronously finds the raw text and converts it to the specified primitive type using 
-    /// the <see cref="ConvertToType{TPrimitive}(string)"/> method.
-    /// </remarks>
-    public Task<TPrimitive> FindTextAsType<TPrimitive>();
+    public Task<string> FindTextAsync();
 
     /// <summary>
     /// <para>Extracts and returns only the numeric text within the <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText"><c>Element.InnerText</c></a>.</para>
     /// </summary>
     /// <param name="options">Call options</param>
-    public Task<string> GetNumericText();
+    public Task<string> GetNumericTextAsync();
 
     /// <summary>
     /// <para> Looks for the <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText"><c>Element.InnerText</c></a> while extracting and returning only the numeric text within it.
@@ -67,29 +41,29 @@ public interface IElement
     /// <para> Will return empty string if Element.InnerText could not be found.</para>
     /// </summary>
     /// <param name="options">Call options</param>
-    public Task<string> FindNumericText();
+    public Task<string> FindNumericTextAsync();
 
     /// <summary>
     /// <para>Returns whether the element is enabled</a>.</para>
     /// </summary>
-    public Task<bool> IsEnabled();
+    public Task<bool> IsEnabledAsync();
 
     /// <summary><para>Returns the matching element's attribute value.</para></summary>
     /// <param name="name">Attribute name to get the value for.</param>
     /// <param name="options">Call options</param>
-    public Task<bool> IsAttributePresent(string attribute, string value);
+    public Task<bool> IsAttributePresentAsync(string attribute, string value);
 
     /// <summary>
     /// <para>Returns whether the element is visible.</para>
     /// </summary>
     /// <param name="options">Call options</param>
-    public Task<bool> IsVisible();
+    public Task<bool> IsVisibleAsync();
 
     /// <summary>
     /// <para>Returns whether the element is hidden.</para>
     /// </summary>
     /// <param name="options">Call options</param>
-    public Task<bool> IsHidden();
+    public Task<bool> IsHiddenAsync();
 
     /// <summary>
     /// <para>
@@ -98,7 +72,7 @@ public interface IElement
     /// </para>
     /// </summary>
     /// <param name="options">Call options</param>
-    public Task Focus();
+    public Task FocusAsync();
 
     /// <summary>
     /// <para>Hover over the matching element.</para>
@@ -115,33 +89,33 @@ public interface IElement
     /// </para>
     /// </summary>
     /// <param name="options">Call options</param>
-    public Task Hover();
+    public Task HoverAsync();
 
     /// <summary>
     /// Waits asynchronously until the element is visible within the specified timeout period. An error will be thrown if the element does not become visible.
     /// </summary>
     /// <param name="timeout">The maximum time to wait for the element to become visible, in seconds.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    public Task WaitUntilVisible(float timeout = 30f);
+    public Task WaitUntilVisibleAsync(float timeout = 30f);
 
     /// <summary>
     /// Waits asynchronously until the element is hidden within the specified timeout period. An error will be thrown if the element remains visible.
     /// </summary>
     /// <param name="timeout">The maximum time to wait for the element to become hidden, in seconds.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    public Task WaitUntilHidden(float timeout = 30f);
+    public Task WaitUntilHiddenAsync(float timeout = 30f);
 
     /// <summary>
     /// Waits asynchronously until the element is visible within the specified timeout period. No error will be thrown if the element does not become visible.
     /// </summary>
     /// <param name="timeout">The maximum time to wait for the element to become visible, in seconds.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    public Task WaitUntilVisibleNoException(float timeout = 30f);
+    public Task WaitUntilVisibleNoExceptionAsync(float timeout = 30f);
 
     /// <summary>
     /// Waits asynchronously until the element is hidden within the specified timeout period. No error will be thrown if the element remains visible.
     /// </summary>
     /// <param name="timeout">The maximum time to wait for the element to become hidden, in seconds.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    public Task WaitUntilHiddenNoException(float timeout = 30f);
+    public Task WaitUntilHiddenNoExceptionAsync(float timeout = 30f);
 }

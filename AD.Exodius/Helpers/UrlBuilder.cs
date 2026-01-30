@@ -53,7 +53,7 @@ public class UrlBuilder
             baseUrl = baseUrl.Replace("/secure", string.Empty);
         }
 
-        route = route?.TrimStart('/').TrimEnd('/');
+        route = route?.TrimStart('/').TrimEnd('/') ?? string.Empty;
 
         return !string.IsNullOrWhiteSpace(route) ? $"{baseUrl}/{route}/" : baseUrl;
     }

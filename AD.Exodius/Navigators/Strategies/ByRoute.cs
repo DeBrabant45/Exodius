@@ -1,6 +1,6 @@
 ﻿using AD.Exodius.Drivers;
-using AD.Exodius.Pages;
-using AD.Exodius.Pages.Extensions;
+using AD.Exodius.Entities.Pages;
+using AD.Exodius.Entities.Pages.Extensions;
 
 namespace AD.Exodius.Navigators.Strategies;
 
@@ -9,19 +9,19 @@ namespace AD.Exodius.Navigators.Strategies;
 /// </summary>
 public class ByRoute : INavigationStrategy
 {
-    public async Task Navigate<TPage>(IDriver driver, TPage page) where TPage : IPageObject
+    public async Task Navigate<TPage>(IDriver driver, TPage page) where TPage : IPageEntity
     {
-        var pageObjectMetaRoute = page.TryGetRoute(out var route) ? route : page.TryGetPageObjectMeta(out var meta) ? meta.Route : null;
+        var pageEntityMetaRoute = page.TryGetRoute(out var route) ? route : page.TryGetPageEntityMeta(out var meta) ? meta.Route : null;
 
-        if (string.IsNullOrEmpty(pageObjectMetaRoute))
+        if (string.IsNullOrEmpty(pageEntityMetaRoute))
             throw new InvalidOperationException($"No Page Meta data as been supplied for Routing on {typeof(TPage).Name}!");
 
-        var newFullPath = driver.BuildUrlWithRoute(pageObjectMetaRoute);
+        var newFullPath = driver.BuildUrlWithRoute(pageEntityMetaRoute);
         var currentPath = driver.CurrentUrl();
 
         if (currentPath == newFullPath)
             return;
 
-        await driver.GoToUrl(newFullPath);
+        await driver.GoToUrlAsync(newFullPath);
     }
 }

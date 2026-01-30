@@ -8,11 +8,11 @@ public class ImageElement : BaseClickElement
 
     }
 
-    public async Task<string> FindAltText() => await Locator.GetAttributeAsync("alt") ?? "";
+    public async Task<string> FindAltTextAsync() => await Locator.GetAttributeAsync("alt") ?? "";
 
-    public async Task<string> FindSrc() => await Locator.GetAttributeAsync("src") ?? "";
+    public async Task<string> FindSrcAsync() => await Locator.GetAttributeAsync("src") ?? "";
 
-    public async Task<bool> IsDataIconPresent(string iconName) => await IsAttributePresent("data-icon", iconName);
+    public async Task<bool> IsDataIconPresentAsync(string iconName) => await IsAttributePresentAsync("data-icon", iconName);
 
-    public virtual async Task Click(int index) => await Locator.Nth(index).ClickAsync();
+    public virtual async Task ClickAsyncAsync(int index) => await Locator.Nth(index).ClickAsync();
 }

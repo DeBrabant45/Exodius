@@ -14,7 +14,7 @@ public interface IBrowserService
     /// associated with the browser instance and disposes of the browser instance itself.
     /// </remarks>
     /// <returns>A task representing the asynchronous operation of closing the page and browser.</returns>
-    public Task ClosePage();
+    public Task ClosePageAsync();
 
     /// <summary>
     /// Opens a new browser session and creates a new page.
@@ -24,7 +24,7 @@ public interface IBrowserService
     /// It then creates a new page within the browser instance.
     /// </remarks>
     /// <returns>A task representing the asynchronous operation of opening the browser and creating the page.</returns>
-    public Task OpenPage();
+    public Task OpenPageAsync();
 
     /// <summary>
     /// Closes the page at the specified index without ending the browser session.
@@ -35,5 +35,5 @@ public interface IBrowserService
     /// </remarks>
     /// <param name="index">The index of the page to close within the browser context.</param>
     /// <returns>A task representing the asynchronous operation of closing the page.</returns>
-    public Task ClosePage(int index);
+    public Task ClosePageAsync(int index);
 }

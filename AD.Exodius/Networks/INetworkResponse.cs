@@ -4,8 +4,9 @@ namespace AD.Exodius.Networks;
 
 public interface INetworkResponse
 {
-    public Task<T> JsonResponse<T>();
-    public Task<byte[]> Body();
-    public Task<JsonElement?> JsonResponse();
-    public Task<JsonElement> Payload();
+    public Task<T> GetJsonResponseAsync<T>();
+    public Task<byte[]> GetBodyAsync();
+    public Task<JsonElement?> GetJsonResponseAsync();
+    public Task<JsonElement?> GetPayloadAsync();
+    public Task<string> GetRequestUrlAsync();
 }

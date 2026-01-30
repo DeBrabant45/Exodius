@@ -1,25 +1,25 @@
 ﻿using AD.Exodius.Drivers;
-using AD.Exodius.Modals;
-using AD.Exodius.Modals.Factories;
-using AD.Exodius.Pages;
+using AD.Exodius.Entities;
+using AD.Exodius.Entities.Modals;
+using AD.Exodius.Entities.Modals.Factories;
+using AD.Exodius.Events;
 
 namespace AD.Exodius.Components;
 
-public abstract class ModalOpenComponent : PageComponent, IModalOpenComponent
+public abstract class ModalOpenComponent : EntityComponent, IModalOpenComponent
 {
-    public ModalOpenComponent(
-        IDriver driver,
-        IPageObject owner) 
-        : base(driver, owner)
+    public ModalOpenComponent(IDriver driver, IEntity owner, IEventBus eventBus) 
+        : base(driver, owner, eventBus)
     {
 
     }
 
-    public virtual async Task<TModalObject> OpenModal<TModalObject>() where TModalObject : ModalObject
+    public virtual async Task<TModalEntity> OpenModal<TModalEntity>() where TModalEntity : IModalEntity
     {
         await TriggerOpen();
 
-        var modal = ModalFactory.Create<TModalObject>(Driver, (IPageObject)Owner);
+        var modal = ModalFactory.Create<TModalEntity>(Driver, EventBus, Owner);
+        modal.AssembleGraph();
         modal.InitializeLazyComponents();
 
         return modal;

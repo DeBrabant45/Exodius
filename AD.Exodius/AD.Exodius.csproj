@@ -12,8 +12,4 @@
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\AD.Exodius.Utility\AD.Exodius.Utility.csproj" />
-  </ItemGroup>
-
 </Project>
