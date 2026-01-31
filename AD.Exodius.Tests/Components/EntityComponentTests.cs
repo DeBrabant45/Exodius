@@ -4,7 +4,7 @@ using AD.Exodius.Drivers;
 using AD.Exodius.Entities;
 using AD.Exodius.Events;
 using AD.Exodius.Tests.Stubs.Components;
-using AD.Exodius.Tests.Stubs.Entities.PageObjects;
+using AD.Exodius.Tests.Stubs.Entities.Pages;
 
 namespace AD.Exodius.Tests.Components;
 

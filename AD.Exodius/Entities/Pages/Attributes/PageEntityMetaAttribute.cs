@@ -4,6 +4,7 @@
 public class PageEntityMetaAttribute : Attribute
 {
     public string Route { get; set; } = string.Empty;
+    public string QueryString { get; set; } = string.Empty;
     public string DomId { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public Type? Registry { get; set; }
@@ -27,8 +28,14 @@ public class PageEntityMetaAttribute : Attribute
         Name = pageName;
     }
 
-    public PageEntityMetaAttribute(string route, string domId, string pageName, Type registry)
-        : this(route, domId, pageName)
+    public PageEntityMetaAttribute(string route, string domId, string pageName, string queryString)
+    : this(route, domId, pageName)
+    {
+        QueryString = queryString;
+    }
+
+    public PageEntityMetaAttribute(string route, string domId, string pageName, string queryString, Type registry)
+        : this(route, domId, pageName, queryString)
     {
         Registry = registry;
     }

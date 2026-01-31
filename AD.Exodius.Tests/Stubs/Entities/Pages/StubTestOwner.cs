@@ -4,7 +4,7 @@ using AD.Exodius.Entities.Pages;
 using AD.Exodius.Events;
 using AD.Exodius.Tests.Stubs.Attributes;
 
-namespace AD.Exodius.Tests.Stubs.Entities.PageObjects;
+namespace AD.Exodius.Tests.Stubs.Entities.Pages;
 
 public interface ITestGraph : IEntity { }
 

@@ -15,7 +15,7 @@ public class EventBus : IEventBus
         list.Add(handler);
     }
 
-    public void SubscribeAsync<TEvent>(Func<TEvent, Task> handler) where TEvent : IEvent
+    public void Subscribe<TEvent>(Func<TEvent, Task> handler) where TEvent : IEvent
     {
         var type = typeof(TEvent);
         if (!_handlers.TryGetValue(type, out var list))
@@ -26,7 +26,7 @@ public class EventBus : IEventBus
         list.Add(handler);
     }
 
-    public async Task Publish<TEvent>(TEvent publishEvent) where TEvent : IEvent
+    public async Task PublishAsync<TEvent>(TEvent publishEvent) where TEvent : IEvent
     {
         var type = typeof(TEvent);
 

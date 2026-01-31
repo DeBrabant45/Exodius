@@ -55,6 +55,11 @@ public class UrlBuilder
 
         route = route?.TrimStart('/').TrimEnd('/') ?? string.Empty;
 
-        return !string.IsNullOrWhiteSpace(route) ? $"{baseUrl}/{route}/" : baseUrl;
+        if (string.IsNullOrWhiteSpace(route))
+            return baseUrl;
+
+        var hasQuery = route.Contains('?');
+
+        return hasQuery ? $"{baseUrl}/{route}" : $"{baseUrl}/{route}/";
     }
 }

@@ -9,7 +9,7 @@ public class PageEntity : Entity, IPageEntity
     public PageEntity(IDriver driver, IEventBus eventBus)
         :base(driver, eventBus)
     {
-        EventBus.SubscribeAsync<PageReadyCheckEvent>(OnReadyCheck);
+        EventBus.Subscribe<PageReadyCheckEvent>(OnReadyCheck);
     }
 
     private async Task OnReadyCheck(PageReadyCheckEvent _)

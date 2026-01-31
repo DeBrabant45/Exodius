@@ -38,7 +38,7 @@ public class PageEntityTests
     {
         var page = new EventPageEntity(_driver, _eventBus);
 
-        await _eventBus.Publish(new PageReadyCheckEvent());
+        await _eventBus.PublishAsync(new PageReadyCheckEvent());
 
         Assert.True(page.WaitCalled);
     }

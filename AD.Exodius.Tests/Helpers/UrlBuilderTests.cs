@@ -32,6 +32,7 @@ public class UrlBuilderTests
     [InlineData("https://testing2.com/secure/", "/module/test", "https://testing2.com/secure/module/test/")]
     [InlineData("https://testing2.com", "/login", "https://testing2.com/login/")]
     [InlineData("https://testing2.com/secure", "/login", "https://testing2.com/login/")]
+    [InlineData("https://testing5.com/secure", "/login?param=1", "https://testing5.com/login?param=1")]
     public void AppendRoute_Should_AppendRouteCorrectly(string baseUrl, string route, string expectedUrl)
     {
         var result = UrlBuilder.AppendRoute(baseUrl, route);

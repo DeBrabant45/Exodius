@@ -21,9 +21,9 @@ public class Entity : IEntity
         _unregisteredComponentTypes = [];
     }
 
-    public void AddComponent<TPageComponent>() where TPageComponent : IEntityComponent
+    public void AddComponent<TEntityComponent>() where TEntityComponent : IEntityComponent
     {
-        _unregisteredComponentTypes.Add(typeof(TPageComponent));
+        _unregisteredComponentTypes.Add(typeof(TEntityComponent));
     }
 
     public void AssembleGraph()
@@ -71,24 +71,24 @@ public class Entity : IEntity
         stack.Pop();
     }
 
-    public TPageComponent GetComponent<TPageComponent>() where TPageComponent : IEntityComponent
+    public TEntityComponent GetComponent<TEntityComponent>() where TEntityComponent : IEntityComponent
     {
         var matches = _registeredComponents
-            .OfType<TPageComponent>()
+            .OfType<TEntityComponent>()
             .ToList();
 
         if (matches.Count == 0)
-            throw new InvalidOperationException($"{typeof(TPageComponent).Name} does not exist in the registry.");
+            throw new InvalidOperationException($"{typeof(TEntityComponent).Name} does not exist in the registry.");
 
         if (matches.Count > 1)
-            throw new InvalidOperationException($"Multiple components found for {typeof(TPageComponent).Name}. Use GetComponents<T>() instead.");
+            throw new InvalidOperationException($"Multiple components found for {typeof(TEntityComponent).Name}. Use GetComponents<T>() instead.");
 
         return matches[0];
     }
 
-    public List<TPageComponent> GetComponents<TPageComponent>() where TPageComponent : IEntityComponent
+    public List<TEntityComponent> GetComponents<TEntityComponent>() where TEntityComponent : IEntityComponent
     {
-        return _registeredComponents.OfType<TPageComponent>().ToList();
+        return _registeredComponents.OfType<TEntityComponent>().ToList();
     }
 
     public void InitializeLazyComponents()
@@ -98,8 +98,8 @@ public class Entity : IEntity
             .ForEach(lazyComponent => lazyComponent.Initialize());
     }
 
-    public void RemoveComponent<TPageComponent>() where TPageComponent : IEntityComponent
+    public void RemoveComponent<TEntityComponent>() where TEntityComponent : IEntityComponent
     {
-        _registeredComponents.Remove(GetComponent<TPageComponent>());
+        _registeredComponents.Remove(GetComponent<TEntityComponent>());
     }
 }

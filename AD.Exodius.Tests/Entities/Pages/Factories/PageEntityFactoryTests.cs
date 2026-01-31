@@ -1,7 +1,7 @@
 ﻿using AD.Exodius.Drivers;
 using NSubstitute;
 using AD.Exodius.Entities.Pages.Factories;
-using AD.Exodius.Tests.Stubs.Entities.PageObjects;
+using AD.Exodius.Tests.Stubs.Entities.Pages;
 using AD.Exodius.Events;
 
 namespace AD.Exodius.Tests.Entities.Pages.Factories;

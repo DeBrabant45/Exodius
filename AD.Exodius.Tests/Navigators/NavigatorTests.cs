@@ -1,14 +1,12 @@
-﻿using NSubstitute;
-using AD.Exodius.Drivers;
-using AD.Exodius.Entities.Pages;
+﻿using AD.Exodius.Drivers;
 using AD.Exodius.Entities.Pages.Factories;
 using AD.Exodius.Events;
 using AD.Exodius.Events.Factories;
 using AD.Exodius.Navigators;
-using AD.Exodius.Navigators.Strategies;
 using AD.Exodius.Navigators.Strategies.Factories;
-using AD.Exodius.Tests.Stubs.Entities.PageObjects;
+using AD.Exodius.Tests.Stubs.Entities.Pages;
 using AD.Exodius.Tests.Stubs.Navigators.Strategies;
+using NSubstitute;
 
 namespace AD.Exodius.Tests.Navigators;
 
@@ -64,7 +62,7 @@ public class NavigatorTests
 
             stubNavigation.Navigate(_mockDriver, stubPage);
 
-            stubPage.WaitUntilReady();
+            stubPage?.WaitUntilReady();
         });
     }
 
